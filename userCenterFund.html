@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>用户中心-资金明细</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="./bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="./css/style.css">
+    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+</head>
+<body class="bg-f8">
+    <!-- header -->
+    <!--#include file ="./userCenterHead.html"-->
+    <!-- user container -->
+    <div class="g-container d-flex justify-content-between mx-auto user">
+        <!-- left -->
+        <!--#include file ="./aside.html"-->
+        <!-- right -->
+        <div class="g-content">
+            <div class="carousel slide ident-top-carousel" data-ride="Carouse" id="identTopCarouse">
+                <ol class="carousel-indicators">
+                    <li data-target="#identTopCarouse" data-slide-to="0" class="active"></li>
+                    <li data-target="#identTopCarouse" data-slide-to="1"></li>
+                </ol>
+                <div class="carousel-inner">
+                    <div class="carousel-item active">
+                        <a href="//lp.ls24k.com/active/lp_190605gg76w9hp.html" target="_blank"><img src="./images/up-img-top-banner1.png" class="w-100"></a>
+                    </div>
+                    <div class="carousel-item">
+                        <a href="//www.ls24k.com/about.html" target="_blank"><img src="./images/up-img-top-banner2.png" class="w-100"></a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-ff user-main fund-main">
+                <div class="fund-main-top">
+                    <strong class="fz18 s-fcc09">资金明细</strong>
+                </div>
+                <div class="fund-main-top-c d-flex justify-content-center text-center flex-nowrap" id="fundInfo"> 
+                    <span class="align-self-center border-right">
+                        <i class="fz30 s-fcff01" availableBalance></i>
+                        <p class="fz14 s-fc99">余额(美元)</p>
+                    </span>
+                    <span class="align-self-center border-right">
+                        <i class="fz30 s-fcff01" netValue></i>
+                        <p class="fz14 s-fc99">净值(美元)</p>
+                    </span>
+                    <span class="align-self-center border-right">
+                        <i class="fz30" bondValue></i>
+                        <p class="fz14 s-fc99">可用预付款(美元)</p>
+                    </span>
+                    <span class="align-self-center">
+                        <button class="btn bg-c09a57 text-white fz18 d-block mx-auto" onclick="window.location.href='./userCenterRecharge.html'">存款</button>
+                        <button class="btn fz18 d-block s-fcc09 mx-auto" onclick="window.location.href='./userCenterWithdraw.html'">取款</button>
+                    </span>
+                </div>
+                <div class="fund-main-msg d-flex justify-content-start s-fcc09 j-withdraw-info">
+                    <div class="msg-i"><span class="fz18">累计获得佣金：</span><i class="fz24" getRewardCount></i></div>
+                    <div class="msg-i"><span class="fz18">可用佣金：</span><i class="fz24" getRewardMoney></i></div>
+                </div>
+                <div class="fund-main-reco">
+                     <div class="fund-main-reco-guid text-center d-flex justify-content-center j-fund-reco-guid fz18 s-fcc09">
+                         <span class="active">当前出金记录</span>
+                         <span class="">当前入金记录</span>
+                     </div>
+                     <div class="fund-main-reco-c j-fund-main-reco-c">
+                         <table class="w-100 text-center" id="outTable">
+                             
+                         </table>
+                         <div class="pages d-flex justify-content-center fz14" id="outPages"></div>
+                     </div>
+                     <div class="fund-main-reco-c j-fund-main-reco-c"  style="display: none">
+                         <table class="w-100 text-center" id="intable"></table>
+                         <div class="pages d-flex justify-content-center fz14" id="inPages"></div>
+                     </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <!-- footer -->
+    <!--#include file ="./footer.html"-->
+
+    <!-- server -->
+    <!--#include file ="./userCenterServer.html"-->
+
+    <script src="js/jquery.min.js"></script>
+    <script src="bootstrap/js/bootstrap.min.js" ></script>
+    <script src="js/jquery.lazyload.min.js" ></script>
+    <script src="./js/jquery.cookie.js"></script>
+    <script src="./js/jq-paginator.min.js"></script>
+    <script src="./js/popup.js" ></script>
+    <script src="js/common.js"></script>
+    <script src="js/userCenter.js"></script>
+    <script>
+        asideGuid(2);
+
+        $(function(){
+            var res = $.outrender();
+            var total = res.data.total , size = res.data.size;
+            if(total > size){
+                var totalPages = Math.ceil(total/size);
+                $("#outPages").jqPaginator({
+                    totalPages: totalPages,  //总共多少页
+                    visiblePages: 5, //最多显示分页数
+                    currentPage: 1, // 初始显示第几页
+                    first: '<a href="javascript:void(0);">首页<\/a>',
+                    prev: '<a href="javascript:void(0);">上一页<\/a>',
+                    next: '<a href="javascript:void(0);">下一页<\/a>',
+                    last: '<a href="javascript:void(0);">尾页<\/a>',
+                    page: '<a href="javascript:void(0);">{{page}}<\/a>',
+                    onPageChange: function(n) {
+                        $.outrender({"page":n});
+                    }
+                });
+            }else{
+                $("#outPages").hide();
+            }
+            var inRes = $.inrender();
+            var intotal = inRes.data.total , insize = inRes.data.size;
+            if(intotal > insize){
+                var intotalPages = Math.ceil(intotal/insize);
+                $("#inPages").jqPaginator({
+                    totalPages: intotalPages,  //总共多少页
+                    visiblePages: 5, //最多显示分页数
+                    currentPage: 1, // 初始显示第几页
+                    first: '<a href="javascript:void(0);">首页<\/a>',
+                    prev: '<a href="javascript:void(0);">上一页<\/a>',
+                    next: '<a href="javascript:void(0);">下一页<\/a>',
+                    last: '<a href="javascript:void(0);">尾页<\/a>',
+                    page: '<a href="javascript:void(0);">{{page}}<\/a>',
+                    onPageChange: function(n) {
+                        $.inrender({"page":n});
+                    }
+                });
+            }else{
+                $("#inPages").hide();
+            }
+
+            var getRewardRes = $.ajaxMethod({url:"brokerage/brokerageInfo",async:false});
+            switch (getRewardRes.code) {
+                case 1:
+                    $(".j-withdraw-info [getRewardMoney]").html(getRewardRes.data.money);
+                    $(".j-withdraw-info [getRewardCount]").html(getRewardRes.data.count);
+                    break;
+            
+                default:
+                    break;
+            }
+        });
+
+        (function($){
+            $.extend({
+                outajaxres: function(o){
+                            var o = o;
+                            var res = $.ajaxMethod({url:"account/withdraw_list",async:false,data:{"page":o.page,"size":o.size}});
+                            return res;
+                        },
+                inajaxres: function(o){
+                            var o = $.extend(o);
+                            var res = $.ajaxMethod({url:"account/recharge_list",async:false,data:{"page":o.page,"size":o.size}});
+                            return res;
+                        },
+                outrender:function(o){
+                    var d = {
+                                page:1,
+                                size:10
+                            };
+                    var o = $.extend(d,o);
+                    var res = $.outajaxres(o);
+                    var $OutHtml = new Array();
+                    $OutHtml.push("<tr><th>申请时间</th><th>银行卡</th><th>提现金额（美元）</th><th>到账金额（美元）</th><th>手续费（美元）</th><th>状态</th><th>备注</th><th>操作</th></tr>");
+                    if(res.data.list.length === 0){
+                        $OutHtml.push("<tr><td colspan='8'>无</td></tr>");
+                    }else{
+                        var num = res.data.list.length , i = num;
+                        for( i ; i--; ){
+                            var j = num - i - 1 , status;
+                            switch (res.data.list[j].get_status) {
+                                case 0:
+                                    status = "处理中";
+                                    break;
+                                case 1:
+                                    status = "申请失败";
+                                    break;
+                                case 2:
+                                    status = "待审核";
+                                    break;
+                                case 3:
+                                    status = "审核不通过";
+                                    break;
+                                case 4:
+                                    status = "审核通过";
+                                    break;
+                                case 5:
+                                    status = "财务已付款";
+                                    break;
+                                case 9:
+                                    status = "用户取消";
+                                    break;
+                            }
+                            $OutHtml.push("<tr><td>");
+                            $OutHtml.push(res.data.list[j].createtime_text);
+                            $OutHtml.push("</td><td>");
+                            $OutHtml.push(res.data.list[j].card);
+                            $OutHtml.push("</td><td>");
+                            $OutHtml.push(res.data.list[j].withdraw);
+                            $OutHtml.push("</td><td>");
+                            $OutHtml.push(res.data.list[j].withdraw_usd);
+                            $OutHtml.push("</td><td>");
+                            $OutHtml.push(res.data.list[j].poundage);
+                            $OutHtml.push("</td><td>");
+                            $OutHtml.push(status);
+                            $OutHtml.push("</td><td>");
+                            $OutHtml.push(res.data.list[j].remark);
+                            $OutHtml.push("</td><td>");
+                            $OutHtml.push(res.data.list[j].get_status ===2 ? "<button class='text-white bg-c09a57' repeal data-id="+ res.data.list[j].id +">撤销</button>" : "");
+                            $OutHtml.push("</td></tr>");
+                        };
+                    };
+                    var str = $OutHtml.join("");
+                    $("#outTable").html(str);
+
+                    $("#outTable").on("click","[repeal]",function(){
+                        var withdraw_id = $(this).attr("data-id");
+                        var res = $.ajaxMethod({ url:"account/withdraw_cancel",type:"POST",async:false,data:{"withdraw_id":withdraw_id} });
+                        switch (res.code){
+                            case 1:
+                                window.location.reload();
+                                break;
+                        }
+                    });
+                    return res;
+                },
+                inrender : function(o){
+                    var d = {
+                                page:1,
+                                size:10
+                            };
+                    var o = $.extend(d,o);
+                    var res = $.inajaxres(o);
+                    var $InHtml = new Array();
+                    $InHtml.push("<tr><th>申请时间</th><th>入金渠道</th><th>交易单号</th><th>金额（美元）</th><th>状态</th><th>操作</th></tr>");
+                    if(res.data.list.length === 0){
+                        $InHtml.push("<tr><td colspan='6'>无</td></tr>");
+                    }else{
+                        var num = res.data.list.length , i = num;
+                        for( i ; i--; ){
+                            var j = num - i - 1 , status;
+                            switch (res.data.list[j].pay_status) {
+                                case 0:
+                                    status = "未支付";
+                                    break;
+                                case 1:
+                                    status = "处理中";
+                                    break;
+                                case 2:
+                                    status = "处理中";
+                                    break;
+                                case 3:
+                                    status = "已到账";
+                                    break;
+                                case 4:
+                                    status = "已撤销";
+                                    break;
+                                case 5:
+                                    status = "已关闭";
+                                    break;
+                            }
+                            $InHtml.push("<tr><td>");
+                            $InHtml.push(res.data.list[j].createtime_text);
+                            $InHtml.push("</td><td>");
+                            $InHtml.push(res.data.list[j].channel_name);
+                            $InHtml.push("</td><td>");
+                            $InHtml.push(res.data.list[j].order_no);
+                            $InHtml.push("</td><td>");
+                            $InHtml.push(res.data.list[j].recharge_usd);
+                            $InHtml.push("</td><td>");
+                            $InHtml.push(status);
+                            $InHtml.push("</td><td>");
+                            $InHtml.push(res.data.list[j].pay_status ===0 ? "<button class='text-white bg-c09a57' continue  data-id="+ res.data.list[j].id +" onclick=window.open('"+res.data.list[j].pay_url+"')>继续支付</button><button class='s-fcc09' cancel data-id="+ res.data.list[j].id +">取消</button>" : "");
+                            $InHtml.push("</td></tr>");
+                        };
+                    };
+                    var str = $InHtml.join("");
+                    $("#intable").html(str);
+
+                    $("#intable").on("click","[cancel]",function(){
+                        var recharge_id = $(this).attr("data-id");
+                        var res = $.ajaxMethod({ url:"account/recharge_cancel",type:"POST",async:false,data:{"recharge_id":recharge_id} });
+                        switch (res.code){
+                            case 1:
+                                window.location.reload();
+                                break;
+                        }
+                    });
+                    return res;
+                }
+            });
+        })(jQuery)
+    </script>
+</body>
+</html>

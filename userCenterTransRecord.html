@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>用户中心-交易记录</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="./bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="./css/datepicker.css">
+    <link rel="stylesheet" href="./css/style.css">
+    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+</head>
+<body class="bg-f8">
+    <!-- header -->
+    <!--#include file ="./userCenterHead.html"-->
+    <!-- user container -->
+    <div class="g-container d-flex justify-content-between mx-auto user">
+        <!-- left -->
+        <!--#include file ="./aside.html"-->
+        <!-- right -->
+        <div class="g-content">
+            <div class="carousel slide ident-top-carousel" data-ride="Carouse" id="identTopCarouse">
+                <ol class="carousel-indicators">
+                    <li data-target="#identTopCarouse" data-slide-to="0" class="active"></li>
+                    <li data-target="#identTopCarouse" data-slide-to="1"></li>
+                </ol>
+                <div class="carousel-inner">
+                    <div class="carousel-item active">
+                        <a href="//lp.ls24k.com/active/lp_190605gg76w9hp.html" target="_blank"><img src="./images/up-img-top-banner1.png" class="w-100"></a>
+                    </div>
+                    <div class="carousel-item">
+                        <a href="//www.ls24k.com/about.html" target="_blank"><img src="./images/up-img-top-banner2.png" class="w-100"></a>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-ff recoed-main user-main">
+                <strong class="recoed-main-top fz18 s-fcc09 d-block">交易记录</strong>
+                <div class="recoed-main-search d-flex justify-content-between align-self-center">
+                    <div class="d-flex justify-content-start recoed-main-select position-relative">
+                        <span class="text-center text-nowrap border col-10 justify-content-center border-right-0 s-fc66" data-classify="1" sel_main>平仓时间</span>
+                        <span class="text-center col-2 justify-content-center position-relative border border-left-0" sel_icon_c><i sel_icon></i></span>
+                        <ul class="w-100 position-absolute text-center border" sel_lis>
+                            <li class="w-100 d-block" data-classify="1">平仓时间</li>
+                            <li class="w-100 d-block" data-classify="2">开仓时间</li>
+                        </ul>
+                    </div>
+                    <div class="align-self-center d-flex justify-content-start">
+                        <label class="s-fc66 align-self-center">开始时间：</label>
+                        <div class="c-datepicker-date-editor c-datepicker-single-editor J-datepicker-day align-self-center">
+                            <input type="text" autocomplete="off" name="" placeholder="选择日期" class="c-datepicker-data-input only-date" aria-label="starTime">
+                        </div>
+                    </div>
+                    <div class="align-self-center d-flex justify-content-start ">
+                        <label class="s-fc66 align-self-center">结束时间：</label>
+                        <div class="c-datepicker-date-editor c-datepicker-single-editor J-datepicker-day align-self-center">
+                            <input type="text" autocomplete="off" name="" placeholder="选择日期" class="c-datepicker-data-input only-date" aria-label="endTime">
+                        </div>
+                    </div>
+                    <button class="btn text-white" type="button" id="searchBtn">查询</button>
+                </div>
+                <div class="recoed-main-lis d-flex justify-content-between">
+                    <a href="javascript:void(0)" class="user-fa recoed-main-lis-pre"></a>
+                    <div class="position-relative recoed-main-lis-table text-center">
+                        <table class="text-center" id="recoedMainTisTable"></table>
+                    </div>
+                    <a href="javascript:void(0)" class="user-fa recoed-main-lis-next"></a>
+                </div>
+                <div class="pages d-flex justify-content-center fz14" id="pages"></div>
+            </div>
+        </div>
+    </div>
+    <!-- footer -->
+    <!--#include file ="./footer.html"-->
+
+    <!-- server -->
+    <!--#include file ="./userCenterServer.html"-->
+
+    <script src="js/jquery.min.js"></script>
+    <script src="bootstrap/js/bootstrap.min.js" ></script>
+    <script src="js/jquery.lazyload.min.js" ></script>
+    <script src="./js/plugins/moment.min.js"></script>
+    <script src="./js/datepicker.all.min.js"></script>
+    <script src="./js/jq-paginator.min.js"></script>
+    <script src="./js/popup.js" ></script>
+    <script src="./js/jquery.cookie.js"></script>
+    <script src="js/common.js"></script>
+    <script src="js/userCenter.js"></script>
+    <script>
+        asideGuid(3);
+        userCenterRecord();
+
+        $(function(){
+            render();
+        })
+
+        $("#searchBtn").on("click",throttle(reRender,1000));
+
+        function throttle(fn,wait){
+            var pre = 0;
+            return function(){
+                var method = this;
+                var args = arguments;
+                var now = Date.now();
+                if(now - pre >= wait){
+                    fn.apply(method, args);
+                    pre = now;
+                }
+            };
+        };
+
+        function reRender(){
+            var tid = $(".recoed-main-search [sel_main]").attr("data-classify");
+            var s_time =(new Date($(".recoed-main-search input[aria-label='starTime']").val() + " 00:00:00")).valueOf()/1000 || "";
+            var e_time = (new Date($(".recoed-main-search input[aria-label='endTime']").val() + " 00:00:00")).valueOf()/1000 || "";
+            render({
+                s_time : s_time,
+                e_time : e_time,
+                tid : tid
+            });
+        }
+
+        function render(o){
+            var d = {
+                page : 1,
+                size : 10,
+                s_time : "",
+                e_time :  "",
+                tid : 1
+            }
+            var o = $.extend(d,o);
+            var res = $.ajaxMethod({url:"account/trade_list",async:false,data:o});
+            var $HTML = new Array();
+            $HTML.push("<tr class='s-fcc09'><th>开仓时间</th><th>平仓时间</th><th>单号</th><th>产品</th><th>方向</th><th>手数</th><th>开仓价格</th><th>平仓价格</th><th>利息</th><th>获利</th><th>佣金</th></tr>");
+            if(res.data.list.length === 0 || !res){
+                $HTML.push("<tr><td colspan='12'>查无记录！</td></tr>");
+            }else{
+                var len = res.data.list.length , i = len;
+                for( len ; len-- ; ){
+                    var j = i-len- 1 ;
+                    
+                    $HTML.push("<tr><td>"+ res.data.list[j].opentime_text +"</td>"); 
+                    $HTML.push("<td>"+ res.data.list[j].closetime_text +"</td>"); 
+                    $HTML.push("<td>"+ res.data.list[j].no +"</td>"); 
+                    $HTML.push("<td>"+ res.data.list[j].product +"</td>"); 
+                    $HTML.push("<td>"+ res.data.list[j].direction +"</td>"); 
+                    $HTML.push("<td>"+ res.data.list[j].num +"</td>"); 
+                    $HTML.push("<td>"+ res.data.list[j].openprice +"</td>"); 
+                    $HTML.push("<td>"+ res.data.list[j].closeprice +"</td>"); 
+                    $HTML.push("<td>"+ res.data.list[j].interest +"</td>"); 
+                    $HTML.push("<td>"+ res.data.list[j].profit +"</td>"); 
+                    $HTML.push("<td>"+ res.data.list[j].commision +"</td></th>"); 
+                }
+            }
+            var str = $HTML.join("");
+            $("#recoedMainTisTable").html(str);
+            var total = res.data.total , size = res.data.size;
+            if(total > size){
+                var totalPages = Math.ceil(total/size);
+                $("#pages").jqPaginator({
+                    totalPages: totalPages,  //总共多少页
+                    visiblePages: 5, //最多显示分页数
+                    currentPage: 1, // 初始显示第几页
+                    first: '<a href="javascript:void(0);">首页<\/a>',
+                    prev: '<a href="javascript:void(0);">上一页<\/a>',
+                    next: '<a href="javascript:void(0);">下一页<\/a>',
+                    last: '<a href="javascript:void(0);">尾页<\/a>',
+                    page: '<a href="javascript:void(0);">{{page}}<\/a>',
+                    onPageChange: function(n, type) {
+                        var tid = $(".recoed-main-search [sel_main]").attr("data-classify");
+                        var s_time =new Date($(".recoed-main-search input[aria-label='starTime']").val() + " 00:00:00").getTime()/1000 || "";
+                        var e_time = new Date($(".recoed-main-search input[aria-label='endTime']").val() + " 00:00:00").getTime()/1000 || "";
+                        if (type == 'change'){
+                            render({
+                                s_time : s_time,
+                                e_time : e_time,
+                                tid : tid,
+                                page:n
+                            });
+                        }
+
+                    }
+                });
+            }else{
+                $("#pages").hide();
+            }
+        };
+    </script>
+    <script type="text/javascript">
+      $(function(){
+          //年月日单个
+          $('.J-datepicker-day').datePicker({
+            hasShortcut: true,
+            format:'YYYY-MM-DD',
+            max:formatDate(new Date()),
+            shortcutOptions: [{
+              name: '今天',
+              day: '0'
+            }, {
+              name: '昨天',
+              day: '-1'
+            }, {
+              name: '一周前',
+              day: '-7'
+            }]
+          });
+      });
+    </script>
+</body>
+</html>

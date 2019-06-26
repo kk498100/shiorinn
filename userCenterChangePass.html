@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>用户中心-修改密码</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="./bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="./css/style.css">
+    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+</head>
+<body class="bg-f8">
+    <!-- header -->
+    <!--#include file ="./userCenterHead.html"-->
+    <!-- user container -->
+    <div class="g-container d-flex justify-content-between mx-auto user">
+        <!-- left -->
+        <!--#include file ="./aside.html"-->
+        <!-- right -->
+        <div class="g-content">
+            <div class="carousel slide ident-top-carousel" data-ride="Carouse" id="identTopCarouse">
+                <ol class="carousel-indicators">
+                    <li data-target="#identTopCarouse" data-slide-to="0" class="active"></li>
+                    <li data-target="#identTopCarouse" data-slide-to="1"></li>
+                </ol>
+                <div class="carousel-inner">
+                    <div class="carousel-item active">
+                        <a href="//lp.ls24k.com/active/lp_190605gg76w9hp.html" target="_blank"><img src="./images/up-img-top-banner1.png" class="w-100"></a>
+                    </div>
+                    <div class="carousel-item">
+                        <a href="//www.ls24k.com/about.html" target="_blank"><img src="./images/up-img-top-banner2.png" class="w-100"></a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-ff user-main changepass-main">
+                <strong class="changepass-main-top d-block fz18 s-fcc09">修改登录密码</strong>
+                <form class="form changpass-form find-form">
+                    <div class="form-group input-group">
+                        <div class="find-label text-right fz18 s-fc99">账号：</div> 
+                        <div class="find-label fz18 text-nowrap" name></div>
+                    </div>
+                    <div class="form-group input-group">
+                        <div class="find-label text-right fz18 s-fc99">手机号码：</div>
+                        <input type="text" aria-label="Phone" class="j-simu-phone">
+                        <div class="input-group-append">
+                            <span class="input-group-text get-auth-code"><button type="button" id="findAuth">获取验证码</button></span>
+                        </div>
+                    </div>
+                    <div class="form-group input-group">
+                        <div class="find-label text-right fz18 s-fc99">验证码：</div>
+                        <input type="text" aria-label="Authcode" class="form-control">
+                    </div>
+                    <div class="form-group input-group">
+                        <div class="find-label text-right fz18 s-fc99">当前登录密码：</div>
+                        <input type="password" aria-label="passNow" class="form-control">
+                    </div>
+                    <div class="form-group input-group">
+                        <div class="find-label text-right fz18 s-fc99">新的登录密码：</div>
+                        <input type="password" aria-label="passNew" class="form-control">
+                    </div>
+                    <div class="form-group input-group position-relative">
+                        <div class="find-label text-right fz18 s-fc99">确认登录密码：</div>
+                        <input type="password" aria-label="passNewRe" class="form-control">
+                        <div class="text-danger position-absolute fz14 find-hide-msg">两次输入的密码不一致</div>
+                    </div>
+                    <button class="btn text-white fz24" type="button" id="findBtn" disabled="true">确定</button>
+                    <input type="checkbox" checked="checked">
+
+                </form>
+            </div>
+        </div>
+    </div>
+    <!-- footer -->
+    <!--#include file ="./footer.html"-->
+
+    <!-- server -->
+    <!--#include file ="./userCenterServer.html"-->
+
+    <script src="js/jquery.min.js"></script>
+    <script src="bootstrap/js/bootstrap.min.js" ></script>
+    <script src="js/jquery.lazyload.min.js" ></script>
+    <script src="./js/jquery.cookie.js"></script>
+    <script src="./js/popup.js"></script>
+    <script src="js/common.js"></script>
+    <script src="js/userCenter.js"></script>
+    <script>
+        asideGuid(8);
+    </script>
+</body>
+</html>

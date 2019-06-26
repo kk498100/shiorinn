@@ -1,0 +1,387 @@
+input{
+    outline: none !important;
+}
+.recharge-main{
+    min-height: 648px;
+}
+.recharge-main-c-top{
+    margin-top: 80px;
+    font-size: 18px;
+}
+.recharge-main-top strong{
+    margin-right: 24px;
+}
+.recharge-label{
+    width: 270px;
+    text-align: right;
+    color: #666;
+    font-size: 18px;
+}
+.recharge-main-c-top input[type='radio']{
+    width: 20px;
+    height: 20px;
+    background-image: url('../img/recharge-icon.png');
+    background-repeat: no-repeat;
+    background-position: -26px 0;
+    outline: none;
+    margin-right: 12px;
+}
+.recharge-type>span{
+    margin-right: 40px;
+    cursor: pointer;
+}
+.recharge-type .active{
+    color: #b99455;
+    font-weight: 800;
+}
+.recharge-type .active input[type='radio']{
+    background-position: 0 0;
+}
+.digital-cash-i{
+    margin-top: 30px;
+}
+.digital-cash-i label{
+    height: 44px;
+    line-height: 44px;
+}
+.digital-cash-i .digital-cash-num{
+    position: relative;
+    width: 384px;
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
+.digital-cash-i .digital-cash-num span{
+    width: 120px;
+    height: 44px;
+    line-height: 44px;
+    text-align: center;
+	background-color: #fff;
+	border-radius: 4px;
+    border: solid 1px #b99455;
+    cursor: pointer;
+    margin-bottom: 18px;
+    font-size: 18px;
+    color: #c09a57;
+}
+.digital-cash-i .digital-cash-num .active{
+    color: #fff;
+    background-color: #b99455;
+}
+.digital-cash-num .digital-cash-num-trans{
+    width: 100%;
+    padding: 0 4%;
+    height: 44px;
+    border-radius: 4px;
+    border: solid 1px #b5b5b5;
+    outline: none;
+    font-size: 18px;
+}
+.digital-cash-num .tip{
+    color: #999;
+    margin-top: 10px;
+}
+.recharge-submit{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin-top: 50px;
+    text-align: center;
+}
+.recharge-submit .btn{
+    width: 300px;
+    height: 50px;
+    margin: 0 auto 20px;
+	background-color: #b99455;
+    border-radius: 4px;
+    font-size: 20px;
+    color: #fff;
+}
+.recharge-submit .agree{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #999;
+}
+.recharge-submit .agree a{
+    color: #999;
+}
+.recharge-submit .agree a:hover{
+    color: #c09a57;
+}
+.recharge-submit input[type='checkbox']{
+    width: 20px;
+    height: 20px;
+    margin-right: 6px;
+    background-image: url('../img/icon.png');
+    background-repeat: no-repeat;
+    background-position: -205px -280px;
+    outline: none;
+}
+.recharge-submit input[type='checkbox']:checked{
+    background-position: -254px -278px;
+}
+.alipay-put{
+    width: 400px;
+    height: 44px;
+    padding: 0 18px;
+	background-color: #ffffff;
+	border-radius: 4px;
+    border: solid 1px #b5b5b5;
+    font-size: 18px;
+    outline: none;
+}
+.bank-count-info{
+    display: flex;
+    flex-direction: column;
+    width: 730px;
+    margin: 40px auto 70px;
+    padding: 20px 0;
+    background-color: #fff7e9;
+}
+.bank-info-main{
+    padding: 0 46px 20px;
+    border-bottom: 1px dashed #eddbbb;
+}
+.bank-info-main>span{
+    font-size: 18px;
+    margin-bottom: 16px;
+}
+.bank-info-main-c .bank-logo{
+    width: 110px;
+    height: 110px;
+    margin-right: 36px;
+}
+.bank-info-main-c .bank-info-detail{
+    font-size: 16px;
+    color: #999;
+    white-space: nowrap;
+    line-height: 28px;
+}
+.bank-info-main-c .bank-info-detail i{
+    color: #484848;
+}
+.bank-info-main-c .label{
+    width: 82px;
+    text-align: justify;
+    text-align-last: justify;
+}
+.bank-info-tip{
+    padding: 20px 46px 0;
+    color: #999;
+}
+.bank-info-tip i{
+    color: #c09a57;
+    text-decoration: underline;
+}
+.bank-info-tip .icon{
+    width: 22px;
+    height: 20px;
+    background-image: url('../img/recharge-icon.png');
+    background-repeat: no-repeat;
+    background-position: -68px 0;
+    margin-right: 10px;
+}
+.bank-receipt{
+    display: flex;
+    flex-direction: column;
+    padding: 0 20px;
+}
+.bank-receipt .bank-receipt-head{
+    font-size: 20px;
+    line-height: 20px;
+    padding-left: 6px;
+    margin-bottom: 40px;
+    border-left: 4px solid #c09a57;
+}
+.bank-receipt-i{
+    display: flex;
+    justify-content: flex-start;
+    align-items: flex-start;
+    font-size: 18px;
+    margin-bottom: 20px;
+}
+.bank-receipt-label{
+    width: 270px;
+    height: 44px;
+    line-height: 44px;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+}
+.bank-receipt-label i{
+    color: #ff0000;
+    margin-right: 6px;
+}
+.bank-receipt-i .bank-sel{
+    display: flex;
+    width: 400px;
+    height: 44px;
+    line-height: 44px;
+	background-color: #ffffff;
+	border-radius: 4px;
+    border: solid 1px #b5b5b5;
+    padding: 0 40px 0 16px;
+    position: relative;
+    cursor: pointer;
+    font-size: 16px;
+}
+.bank-receipt-i .bank-sel .arrow{
+    border-top: 16px solid #999;
+    border-left: 10px solid transparent;
+    border-right: 10px solid transparent;
+    position: absolute;
+    top: 14px;
+    right: 10px;
+}
+.custom-receipt-num{
+    width: 400px;
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: nowrap;
+}
+.custom-bank{
+    flex: auto;
+    text-align: center;
+}
+.custom-put{
+    width: 253px;
+	height: 44px;
+	background-color: #fff;
+	border-radius: 4px;
+    border: solid 1px #b5b5b5;
+    padding: 0 16px;
+    outline: none;
+}
+.custom-type{
+    margin-left: 20px;
+    font-size: 18px !important;
+}
+.bank-descr{
+    display: flex;
+    flex-direction: column;
+    width: 400px;
+}
+.bank-descr-text{
+    width: 100%;
+    height: 130px;
+    border-radius: 4px;
+    border: solid 1px #b5b5b5;
+    resize: none;
+    padding: 12px;
+    margin-bottom: 24px;
+    outline: none;
+}
+.bank-descr-photo{
+    width: 100%;
+    height: 180px;
+    border-radius: 4px;
+    border: dashed 1px #b5b5b5;
+    margin-bottom: 12px;
+    position: relative;
+}
+.bank-descr-tip{
+    font-size: 14px;
+    color: #999;
+}
+.bank-descr-photo .icon{
+    width: 113px;
+    height: 75px;
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    margin: auto;
+    background-image: url('../img/recharge-icon.png');
+    background-repeat: no-repeat;
+    background-position: -220px 0; 
+    z-index: 10;
+}
+.bank-descr-photo .up-btn{
+    width: 42px;
+    height: 42px;
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 52px;
+    margin: 0 auto;
+    z-index: 99;
+    opacity: 0;
+    cursor: pointer;
+}
+.custom-receipt-data{
+    width:400px !important;
+    height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    border-radius: 4px;
+    border: solid 1px #b5b5b5;
+    padding: 0 10px 0 15px;
+}
+.custom-receipt-data input[type='text']{    
+    border: none;
+    flex: auto;
+    cursor: pointer;
+}
+.custom-receipt-data .icon{
+    width: 30px;
+    height: 32px;
+    background-image: url(../img/recharge-icon.png);
+    background-repeat: no-repeat;
+    background-position: -100px 0;
+}
+.bank-sel .lis{
+    width: 100%;
+    position: absolute;
+    max-height: 300px;
+    overflow-y: auto;
+    left: 0;
+    top: 46px;
+    background-color: #fff;
+    border-radius: 4px;
+    border: solid 1px #b5b5b5;
+    z-index:999;
+    display: none;
+}
+.bank-sel .lis li{
+    padding: 0 16px;
+}
+.bank-sel .lis li:hover{
+    background-color: #e2e2e2;
+}
+.sel-active .arrow{
+    animation: sel .3s forwards;
+}
+@keyframes sel{
+    0%{
+        transform: rotate(0)
+    }
+    100%{
+        transform: rotate(180deg)
+    }
+}
+.input-tip{
+    left: 10px;
+    top: 44px;
+    font-size: 14px;
+    display: none;
+}
+.digital-cash-num-put{
+    position: relative;
+    width: 100% !important;
+    cursor: auto !important;
+    margin-bottom: 0 !important;
+    display: none ;
+}
+.digital-cash-num-put input{
+    border: none !important;
+    width: 99% !important;
+    padding: 0 16px !important;
+    height: 98% !important;
+}
+.digital-cash-num-put .input-tip{
+    top: 36px;
+}

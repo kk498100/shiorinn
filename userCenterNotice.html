@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>用户中心-消息中心</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="./bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="./css/style.css">
+    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+</head>
+<body class="bg-f8">
+    <!-- header -->
+    <!--#include file ="./userCenterHead.html"-->
+    <!-- user container -->
+    <div class="g-container d-flex justify-content-between mx-auto user">
+        <!-- left -->
+        <!--#include file ="./aside.html"-->
+        <!-- right -->
+        <div class="g-content">
+            <div class="carousel slide ident-top-carousel" data-ride="Carouse" id="identTopCarouse">
+                <ol class="carousel-indicators">
+                    <li data-target="#identTopCarouse" data-slide-to="0" class="active"></li>
+                    <li data-target="#identTopCarouse" data-slide-to="1"></li>
+                </ol>
+                <div class="carousel-inner">
+                    <div class="carousel-item active">
+                        <a href="//lp.ls24k.com/active/lp_190605gg76w9hp.html" target="_blank"><img src="./images/up-img-top-banner1.png" class="w-100"></a>
+                    </div>
+                    <div class="carousel-item">
+                        <a href="//www.ls24k.com/about.html" target="_blank"><img src="./images/up-img-top-banner2.png" class="w-100"></a>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-ff notice-main user-main">
+                <div class="d-flex justify-content-between s-fcc09 notice-main-top">
+                    <strong class="fz18">最新公告通知</strong>
+                    <div class="notice-selall d-flex justify-content-lg-start">
+                        <input type="checkbox" id="noticeSelAll" class="align-self-center">
+                        <a href="javascript:void(0)" class="align-self-center" id="noticeDelBtn">删除</a>
+                    </div>
+                </div>
+                <div class="notice-main-content">
+                    <ul id="noticeList" class="notice-list"></ul>
+                </div>
+                <div class="pages d-flex justify-content-center fz14" id="pages"></div>
+            </div>
+        </div>
+    </div>
+    <!-- footer -->
+    <!--#include file ="./footer.html"-->
+
+    <!-- server -->
+    <!--#include file ="./userCenterServer.html"-->
+    <script src="js/jquery.min.js"></script>
+    <script src="bootstrap/js/bootstrap.min.js"></script>
+    <script src="js/jquery.lazyload.min.js"></script>
+    <script src="./js/jquery.cookie.js"></script>
+    <script src="./js/jq-paginator.min.js"></script>
+    <script src="./js/popup.js"></script>
+    <script src="js/common.js"></script>
+    <script src="js/userCenter.js"></script>
+    <script>
+    $(function(){
+        renderNotice();
+        // 删除消息
+        $("#noticeSelAll").on("click",function(){
+           var flag = $(this).is(":checked");
+           if(flag){
+                $("#noticeList [notice_i]").each(function(){
+                    $(this).prop("checked",true);
+                });
+           }else{
+               $("#noticeList [notice_i]").each(function(){
+                    $(this).prop("checked",false);
+                });
+           };
+        });
+
+        $("#noticeList [notice_i]").on("click",function() {
+            $("#noticeList [notice_i]").each(function(){
+                if(!$(this).is(":checked")){
+                    $("#noticeSelAll").prop("checked",false);
+                    return false;
+                }else{
+                    $("#noticeSelAll").prop("checked",true);
+                }
+            });
+        });
+
+        $("#noticeDelBtn").on("click",function(){
+            var delNotice = new Array();
+            $("#noticeList [notice_i]").each(function(){
+                if($(this).is(":checked")){
+                    delNotice.push($(this).parent().parent().attr("data-id"));
+                    $(this).parent().parent().slideUp("fast");
+                }
+            });
+            var message_ids = delNotice.join(",");
+            $.ajaxMethod({ url:"message/remove",type:"POST",data:{ "message_ids":message_ids }});
+            renderNotice();
+        });
+    });
+
+    function renderNotice(){
+        var res = $.notice();
+        var total = res.data.total , size = res.data.size;
+        if(total > size){
+            var totalPages = Math.ceil(total/size);
+            $("#pages").jqPaginator({
+                totalPages: totalPages,  //总共多少页
+                visiblePages: 5, //最多显示分页数
+                currentPage: 1, // 初始显示第几页
+                first: '<a href="javascript:void(0);">首页<\/a>',
+                prev: '<a href="javascript:void(0);">上一页<\/a>',
+                next: '<a href="javascript:void(0);">下一页<\/a>',
+                last: '<a href="javascript:void(0);">尾页<\/a>',
+                page: '<a href="javascript:void(0);">{{page}}<\/a>',
+                onPageChange: function(n) {
+                    $.notice({page:n});
+                    $("#noticeSelAll").prop("checked",false);
+                }
+            });
+        }else{
+            $("#pages").hide();
+        }
+    }
+
+    (function($){
+        $.extend({
+            notice:function(o){
+                var d = {
+                    page : 1,
+                    size : 10
+                };
+                var o = $.extend(d,o);
+                var res = $.ajaxMethod({
+                                url : "message/index",
+                                async:false,
+                                data : { "page":o.page,"size":o.size }
+                            }); 
+                if(res){
+                    var num = res.data.list.length >= o.size ? o.size : res.data.list.length;
+                    var pageArr = res.data.list;
+                    var i = num , $HTML = new Array();
+                    for( num ; num-- ; ){
+                        var j = i - num - 1 , readClass;
+                        switch (res.data.list[j].is_read) {
+                            case 0:
+                                readClass = "notice-list-unread";
+                                break;
+                            case 1:
+                                readClass = "notice-list-read";
+                                break;
+                        }
+                        $HTML.push("<li class='notice-list-i' data-id='");
+                        $HTML.push(res.data.list[j].id);
+                        $HTML.push("'>");
+                        $HTML.push("<div class='d-flex justify-content-lg-start notice-list-i-abs text-nowrap ");
+                        $HTML.push(readClass);
+                        $HTML.push("'>");
+                        $HTML.push("<input type='checkbox' class='align-self-center' notice_i>");
+                        $HTML.push("<i class='user-fa align-self-center'></i>");
+                        $HTML.push("<a href='javascript:void(0)' class='align-self-center' notice_i_title>");
+                        $HTML.push(res.data.list[j].str);
+                        $HTML.push(res.data.list[j].title);
+                        $HTML.push("</a></div>");
+                        $HTML.push("<div class='notice-msg s-fc66 j-notice-msg fz14' notice_i_msg>");
+                        $HTML.push(res.data.list[j].content);
+                        $HTML.push("</div></li>");
+                    }
+                    var str = $HTML.join("");
+                    $("#noticeList").html(str);
+                };
+
+                $("#noticeList [notice_i_title]").on("click",function(){
+                    var parent = $(this).parent().parent();
+                    var noticeABS = $(parent).find(".notice-list-i-abs");
+                    $(parent).find("[notice_i_msg]").slideToggle("fast");
+                    if($(noticeABS).hasClass("notice-list-unread")){
+                        var message_id = $(parent).attr("data-id");
+                        $(noticeABS).removeClass("notice-list-unread");
+                        $(noticeABS).addClass("notice-list-read");
+                        readMsg(message_id);
+                    };
+                });
+                return res;
+            }
+        });
+    })(jQuery);
+    </script>
+</body>
+</html>

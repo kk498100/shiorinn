@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>模拟用户注册成功</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="./bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="./css/style.css">
+    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+</head>
+<body class="bg-f8">
+    <!-- header -->
+    <!--#include file ="./loginHeader.html"-->
+
+    <div class="bg-ff g-container login-content mx-auto">
+        <img src="./img/login-top-banner.png" class="w-100">
+        <div class="simu-suc-content">
+            <div class="d-flex justify-content-center">
+                <i class="fa fa-success align-self-center"></i>
+                <strong class="align-self-center fz36">恭喜，注册成功</strong>
+            </div>
+            <div class="simu-count mx-auto">
+                <span class="fz30 text-nowrap d-block">模拟账户：<i username></i></span>
+                <span class="fz30 text-nowrap d-block">密&emsp;&emsp;码：<i pass></i></span>
+            </div>
+            <div class="down d-flex justify-content-center">
+                <a href="https://uc.ls24k.com/api/common/download" class="down-btn text-white fz24 text-center align-self-center">下载Meta 5交易软件Windows版</a>
+                <div class="e-code align-self-center">
+                    <img src="./images/20bb96b0-0ac8-416b-9744-bd45d0461658.jpg" class="code-img">
+                    <p class="s-fc99 text-center">扫码下载手机版软件</p>
+                </div>
+            </div>
+            <div class="msg">
+                <strong class="fz18">温馨提示：</strong>
+                <p class="fz14 s-fc66">模拟交易账号及密码已发送至您的手机，请留意查收并妥善保管；</p>
+                <p class="fz14 s-fc66">该账户的有效期限为<b class="s-fc48">30天</b>，请尽早下载安装<b class="s-fc48">MT5交易软件</b>，开始享受美妙的交易体验吧。</p>
+            </div>
+        </div>
+    </div>
+    <script src="./js/jquery.min.js"></script>
+    <script src="./bootstrap/js/bootstrap.min.js" ></script>
+    <script src="./js/jquery.lazyload.min.js" ></script>
+    <script src="./js/popup.js" ></script>
+    <script src="./js/common.js"></script>
+    <script src="./js/login.js"></script>
+    <script>
+        (function ($, window, document, undefined) {
+            $.fn.url = function (name) {
+                var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
+                var obj = window.location.search.substr(1).match(reg);
+                if (obj != null) return unescape(obj[2]);
+                return null;
+            };
+            var username = $().url("username"),pass = $().url("pass");
+            $("[username]").html(username);
+            $("[pass]").html(pass);
+        })(jQuery, window, document)
+    </script>
+</body>
+</html>
